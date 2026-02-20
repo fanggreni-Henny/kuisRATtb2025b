@@ -21,7 +21,6 @@ body {
     height: 100vh;
 }
 
-/* KARAKTER DI DEPAN */
 .character {
     position: absolute;
     bottom: 40px;
@@ -40,11 +39,9 @@ body {
     font-weight: bold;
     color: white;
     text-shadow: 2px 2px 6px black;
+    z-index: 30;
 }
 
-/* ========================== */
-/* GOLD BAR SUPER REALISTIS */
-/* ========================== */
 .coin {
     position: absolute;
     width: 120px;
@@ -55,11 +52,11 @@ body {
 
     background: linear-gradient(
         145deg,
-        #fff9c4 0%,
-        #ffd700 30%,
-        #fbc02d 50%,
-        #e6ac00 70%,
-        #b8860b 100%
+        #fff9c4,
+        #ffd700,
+        #fbc02d,
+        #e6ac00,
+        #b8860b
     );
 
     border: 2px solid #8b6508;
@@ -72,7 +69,6 @@ body {
     transition: 0.3s;
 }
 
-/* Tulisan emas emboss */
 .coin::after {
     content: "999.9 FINE GOLD";
     position: absolute;
@@ -82,62 +78,15 @@ body {
     font-size: 12px;
     font-weight: bold;
     color: #8b5a00;
-    text-shadow:
-        1px 1px 1px rgba(255,255,255,0.7),
-        -1px -1px 1px rgba(0,0,0,0.3);
-}
-
-/* Efek kilau menyapu */
-.coin::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -75%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        120deg,
-        rgba(255,255,255,0) 30%,
-        rgba(255,255,255,0.8) 50%,
-        rgba(255,255,255,0) 70%
-    );
-    transform: rotate(25deg);
-    animation: shine 4s infinite;
-}
-
-@keyframes shine {
-    0% { left: -150%; }
-    100% { left: 150%; }
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.7),
+                 -1px -1px 1px rgba(0,0,0,0.3);
 }
 
 .coin:hover {
     transform: scale(1.08);
-    box-shadow:
-        inset -8px -8px 15px rgba(0,0,0,0.4),
-        inset 8px 8px 15px rgba(255,255,255,0.6),
-        0 0 25px gold;
+    box-shadow: 0 0 25px gold;
 }
 
-.coin:active {
-    transform: translateY(5px);
-}
-
-/* Efek kilat saat benar */
-.sparkle {
-    position: absolute;
-    font-size: 50px;
-    color: gold;
-    animation: sparkle 0.8s ease forwards;
-    pointer-events: none;
-    z-index: 30;
-}
-
-@keyframes sparkle {
-    0% { transform: scale(0); opacity: 1; }
-    100% { transform: scale(2); opacity: 0; }
-}
-
-/* Salah */
 .wrong-mark {
     position: absolute;
     top: 40%;
@@ -149,7 +98,6 @@ body {
     z-index: 40;
 }
 
-/* Bendera */
 .flag {
     position: absolute;
     top: 80px;
@@ -158,6 +106,28 @@ body {
     font-size: 100px;
     display: none;
     z-index: 40;
+}
+
+.final-message {
+    position: absolute;
+    top: 200px;
+    width: 100%;
+    font-size: 22px;
+    color: white;
+    text-shadow: 2px 2px 6px black;
+    display: none;
+    z-index: 50;
+}
+
+.final-message a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: gold;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
 }
 </style>
 </head>
@@ -171,23 +141,33 @@ body {
 <div class="wrong-mark" id="wrongMark">❌</div>
 <div class="flag" id="flag">🏁</div>
 
-<!-- LEVEL DIBALIK -->
-<!-- Level 1 paling bawah -->
-<!-- Level 5 paling atas -->
+<div class="final-message" id="finalMessage">
+🎉 SELAMAT MENANG! <br>
+Silahkan isi link google form berikut:<br>
+<a href="https://forms.google.com" target="_blank">Isi Google Form</a>
+</div>
+
+<!-- LEVEL 1–5 -->
 
 <!-- KIRI -->
-<div class="coin" style="top:440px; left:25%;" onclick="choose(this,'left',1)"></div>
-<div class="coin" style="top:360px; left:25%;" onclick="choose(this,'left',2)"></div>
-<div class="coin" style="top:280px; left:25%;" onclick="choose(this,'left',3)"></div>
-<div class="coin" style="top:200px; left:25%;" onclick="choose(this,'left',4)"></div>
-<div class="coin" style="top:120px; left:25%;" onclick="choose(this,'left',5)"></div>
+<div class="coin levelcoin" style="top:440px; left:25%;" onclick="choose(this,'left',1)"></div>
+<div class="coin levelcoin" style="top:360px; left:25%;" onclick="choose(this,'left',2)"></div>
+<div class="coin levelcoin" style="top:280px; left:25%;" onclick="choose(this,'left',3)"></div>
+<div class="coin levelcoin" style="top:200px; left:25%;" onclick="choose(this,'left',4)"></div>
+<div class="coin levelcoin" style="top:120px; left:25%;" onclick="choose(this,'left',5)"></div>
 
 <!-- KANAN -->
-<div class="coin" style="top:440px; right:25%;" onclick="choose(this,'right',1)"></div>
-<div class="coin" style="top:360px; right:25%;" onclick="choose(this,'right',2)"></div>
-<div class="coin" style="top:280px; right:25%;" onclick="choose(this,'right',3)"></div>
-<div class="coin" style="top:200px; right:25%;" onclick="choose(this,'right',4)"></div>
-<div class="coin" style="top:120px; right:25%;" onclick="choose(this,'right',5)"></div>
+<div class="coin levelcoin" style="top:440px; right:25%;" onclick="choose(this,'right',1)"></div>
+<div class="coin levelcoin" style="top:360px; right:25%;" onclick="choose(this,'right',2)"></div>
+<div class="coin levelcoin" style="top:280px; right:25%;" onclick="choose(this,'right',3)"></div>
+<div class="coin levelcoin" style="top:200px; right:25%;" onclick="choose(this,'right',4)"></div>
+<div class="coin levelcoin" style="top:120px; right:25%;" onclick="choose(this,'right',5)"></div>
+
+<!-- LEVEL 6 (HIDDEN AWALNYA) -->
+<div class="coin" id="level6Coin" 
+     style="top:250px; left:50%; transform:translateX(-50%); display:none;"
+     onclick="choose(this,'center',6)">
+</div>
 
 </div>
 
@@ -199,7 +179,8 @@ const correctPattern = {
 2: "right",
 3: "left",
 4: "right",
-5: "left"
+5: "left",
+6: "center"
 };
 
 function choose(element, side, level) {
@@ -221,31 +202,24 @@ if (side === correctPattern[currentLevel]) {
 character.style.left = targetX + "px";
 character.style.bottom = targetY + "px";
 
-/* efek sparkle */
-let sparkle = document.createElement("div");
-sparkle.className = "sparkle";
-sparkle.innerHTML = "✨";
-sparkle.style.left = targetX + "px";
-sparkle.style.bottom = targetY + "px";
-document.querySelector(".game-area").appendChild(sparkle);
-
-setTimeout(()=> sparkle.remove(),800);
-
 setTimeout(() => {
 currentLevel++;
 
-if (currentLevel > 5) {
-document.getElementById("info").innerHTML = "🎉 SELAMAT MENANG!";
-flag.style.display = "block";
+if (currentLevel === 6) {
+document.getElementById("info").innerHTML = "Level 6";
+document.getElementById("level6Coin").style.display = "block";
+}
 
-setTimeout(() => {
-restartGame();
-flag.style.display = "none";
-}, 2000);
+else if (currentLevel > 6) {
+
+flag.style.display = "block";
+document.getElementById("info").innerHTML = "";
+document.getElementById("finalMessage").style.display = "block";
 
 } else {
 document.getElementById("info").innerHTML = "Level " + currentLevel;
 }
+
 }, 700);
 
 } else {
@@ -264,6 +238,9 @@ currentLevel = 1;
 document.getElementById("info").innerHTML = "Level 1";
 document.getElementById("character").style.left = "50%";
 document.getElementById("character").style.bottom = "40px";
+document.getElementById("level6Coin").style.display = "none";
+document.getElementById("finalMessage").style.display = "none";
+document.getElementById("flag").style.display = "none";
 }
 </script>
 
