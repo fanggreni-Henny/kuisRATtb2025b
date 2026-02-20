@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Koin 5 Level</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: url('istockphoto-1265178300-1024x1024.jpg') no-repeat center center;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.game-area {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+.character {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    transition: all 0.5s ease;
+}
+
+.coin {
+    position: absolute;
+    font-size: 40px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.coin:hover {
+    transform: scale(1.2);
+}
+
+.info {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px black;
+}
+</style>
+</head>
+<body>
+
+<div class="game-area">
+
+    <div class="info" id="info">Level 1</div>
+
+    <div class="character" id="character">🚶</div>
+
+    <!-- KOIN KIRI -->
+    <div class="coin" style="top:120px; left:25%;" onclick="choose('left',1)">🪙</div>
+    <div class="coin" style="top:200px; left:25%;" onclick="choose('left',2)">🪙</div>
+    <div class="coin" style="top:280px; left:25%;" onclick="choose('left',3)">🪙</div>
+    <div class="coin" style="top:360px; left:25%;" onclick="choose('left',4)">🪙</div>
+    <div class="coin" style="top:440px; left:25%;" onclick="choose('left',5)">🪙</div>
+
+    <!-- KOIN KANAN -->
+    <div class="coin" style="top:120px; right:25%;" onclick="choose('right',1)">🪙</div>
+    <div class="coin" style="top:200px; right:25%;" onclick="choose('right',2)">🪙</div>
+    <div class="coin" style="top:280px; right:25%;" onclick="choose('right',3)">🪙</div>
+    <div class="coin" style="top:360px; right:25%;" onclick="choose('right',4)">🪙</div>
+    <div class="coin" style="top:440px; right:25%;" onclick="choose('right',5)">🪙</div>
+
+</div>
+
+<script>
+let currentLevel = 1;
+
+/* 
+   POLA JAWABAN:
+   Level 1 = kiri
+   Level 2 = kanan
+   Level 3 = kiri
+   Level 4 = kanan
+   Level 5 = kiri
+*/
+const correctPattern = {
+    1: "left",
+    2: "right",
+    3: "left",
+    4: "right",
+    5: "left"
+};
+
+function choose(side, level) {
+
+    if (level !== currentLevel) return;
+
+    const character = document.getElementById("character");
+
+    if (side === correctPattern[currentLevel]) {
+
+        // Pindahkan karakter
+        if (side === "left") {
+            character.style.left = "25%";
+        } else {
+            character.style.left = "75%";
+        }
+
+        setTimeout(() => {
+            currentLevel++;
+
+            if (currentLevel > 5) {
+                document.getElementById("info").innerHTML = "🎉 SELAMAT MENANG!";
+                alert("Kamu berhasil menyelesaikan semua level!");
+                restartGame();
+            } else {
+                document.getElementById("info").innerHTML = "Level " + currentLevel;
+                character.style.left = "50%";
+            }
+        }, 500);
+
+    } else {
+
+        alert("❌ Salah! Ulang dari awal.");
+        restartGame();
+    }
+}
+
+function restartGame() {
+    currentLevel = 1;
+    document.getElementById("info").innerHTML = "Level 1";
+    document.getElementById("character").style.left = "50%";
+}
+</script>
+
+</body>
+</html>
