@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Game Level Koin Emas 3D</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Koin 5 Level</title>
 
 <style>
 body {
@@ -11,221 +12,195 @@ body {
     text-align: center;
     background: url('background.jpg') no-repeat center center;
     background-size: cover;
-}
-
-/* Level Panel (dibalik) */
-.level-container {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.level-box {
-    width: 120px;
-    padding: 10px;
-    margin: 5px;
-    background: rgba(255,255,255,0.85);
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-/* Area Game */
-.game-area {
-    position: relative;
-    margin-top: 20px;
-}
-
-/* KOIN 3D EMAS */
-.coin {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 26px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 15px;
-    color: #5d4037;
-
-    background: radial-gradient(circle at 30% 30%, #fffde7, #ffd54f, #f9a825, #f57f17);
-    border: 4px solid #e65100;
-
-    box-shadow:
-        inset 0 6px 10px rgba(255,255,255,0.8),
-        inset 0 -6px 10px rgba(0,0,0,0.3),
-        0 8px 15px rgba(0,0,0,0.4);
-
-    animation: floatCoin 2s infinite ease-in-out;
     overflow: hidden;
 }
 
-/* Efek Kilau */
-.coin::before {
-    content: "";
+.game-area {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+.character {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        120deg,
-        rgba(255,255,255,0) 30%,
-        rgba(255,255,255,0.8) 50%,
-        rgba(255,255,255,0) 70%
-    );
-    transform: rotate(25deg);
-    animation: shine 3s infinite;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 60px;
+    transition: all 0.7s ease;
 }
 
-/* Animasi Kilau */
-@keyframes shine {
-    0% { left: -150%; }
-    100% { left: 150%; }
+.info {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px black;
 }
 
-/* Animasi Melayang */
-@keyframes floatCoin {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
-    100% { transform: translateY(0px); }
+/* ========================= */
+/* KOIN EMAS TIMBUL 3D */
+/* ========================= */
+.coin {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    background: radial-gradient(circle at 30% 30%, #fff9c4, #fbc02d, #f57f17);
+    border: 3px solid #e65100;
+
+    box-shadow:
+        inset 0 6px 10px rgba(255,255,255,0.8),
+        inset 0 -6px 10px rgba(0,0,0,0.4),
+        0 8px 12px rgba(0,0,0,0.5);
+
+    transition: 0.2s;
 }
 
 .coin:active {
-    transform: scale(0.9);
+    transform: translateY(4px);
+    box-shadow:
+        inset 0 3px 6px rgba(255,255,255,0.6),
+        inset 0 -3px 6px rgba(0,0,0,0.4),
+        0 4px 6px rgba(0,0,0,0.5);
 }
 
-/* Check & X */
-.correct-mark, .wrong-mark {
+/* Salah */
+.wrong-mark {
     position: absolute;
-    font-size: 100px;
-    display: none;
+    top: 40%;
     left: 50%;
-    transform: translateX(-50%);
-    top: 50px;
+    transform: translate(-50%, -50%);
+    font-size: 120px;
+    color: red;
+    display: none;
+    animation: pop 0.4s ease;
 }
-
-.correct-mark { color: green; }
-.wrong-mark { color: red; }
 
 /* Bendera */
 .flag {
     position: absolute;
-    font-size: 100px;
-    display: none;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
-    top: 40px;
+    font-size: 100px;
+    display: none;
+    animation: popFlag 0.6s ease;
+}
+
+@keyframes pop {
+    0% { transform: translate(-50%, -50%) scale(0); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes popFlag {
+    0% { transform: translateX(-50%) scale(0); }
+    100% { transform: translateX(-50%) scale(1); }
 }
 </style>
 </head>
 
 <body>
 
-<h2 id="info">Level 1</h2>
-
-<div class="level-container" id="levels"></div>
-
 <div class="game-area">
-    <div class="correct-mark" id="correct">✔</div>
-    <div class="wrong-mark" id="wrong">❌</div>
+
+    <div class="info" id="info">Level 1</div>
+    <div class="character" id="character">🚶</div>
+    <div class="wrong-mark" id="wrongMark">❌</div>
     <div class="flag" id="flag">🏁</div>
 
-    <div id="question" style="font-size:30px; margin:20px;"></div>
-    <div id="answers"></div>
+    <!-- ===================== -->
+    <!-- LEVEL DIBALIK -->
+    <!-- 1 PALING BAWAH -->
+    <!-- 5 PALING ATAS -->
+    <!-- ===================== -->
+
+    <!-- KIRI -->
+    <div class="coin" style="top:440px; left:25%;" onclick="choose(this,'left',1)"></div>
+    <div class="coin" style="top:360px; left:25%;" onclick="choose(this,'left',2)"></div>
+    <div class="coin" style="top:280px; left:25%;" onclick="choose(this,'left',3)"></div>
+    <div class="coin" style="top:200px; left:25%;" onclick="choose(this,'left',4)"></div>
+    <div class="coin" style="top:120px; left:25%;" onclick="choose(this,'left',5)"></div>
+
+    <!-- KANAN -->
+    <div class="coin" style="top:440px; right:25%;" onclick="choose(this,'right',1)"></div>
+    <div class="coin" style="top:360px; right:25%;" onclick="choose(this,'right',2)"></div>
+    <div class="coin" style="top:280px; right:25%;" onclick="choose(this,'right',3)"></div>
+    <div class="coin" style="top:200px; right:25%;" onclick="choose(this,'right',4)"></div>
+    <div class="coin" style="top:120px; right:25%;" onclick="choose(this,'right',5)"></div>
+
 </div>
 
 <script>
 let currentLevel = 1;
-let maxLevel = 5;
 
-function generateLevels() {
-    let container = document.getElementById("levels");
-    container.innerHTML = "";
-    for (let i = 1; i <= maxLevel; i++) {
-        let box = document.createElement("div");
-        box.className = "level-box";
-        box.innerText = "Level " + i;
-        container.appendChild(box);
-    }
-}
+const correctPattern = {
+    1: "left",
+    2: "right",
+    3: "left",
+    4: "right",
+    5: "left"
+};
 
-function loadQuestion() {
-    document.getElementById("info").innerText = "Level " + currentLevel;
+function choose(element, side, level) {
 
-    let num1 = Math.floor(Math.random()*10)+1;
-    let num2 = Math.floor(Math.random()*10)+1;
-    let correctAnswer = num1 + num2;
+    if (level !== currentLevel) return;
 
-    document.getElementById("question").innerText = num1 + " + " + num2 + " = ?";
+    const character = document.getElementById("character");
+    const wrongMark = document.getElementById("wrongMark");
+    const flag = document.getElementById("flag");
 
-    let answersDiv = document.getElementById("answers");
-    answersDiv.innerHTML = "";
+    const rect = element.getBoundingClientRect();
+    const parentRect = document.querySelector(".game-area").getBoundingClientRect();
 
-    let options = [
-        correctAnswer,
-        correctAnswer + 1,
-        correctAnswer - 1
-    ];
+    const targetX = rect.left - parentRect.left + rect.width / 2;
+    const targetY = parentRect.height - rect.top - 20;
 
-    options.sort(() => Math.random() - 0.5);
+    if (side === correctPattern[currentLevel]) {
 
-    options.forEach(option => {
-        let btn = document.createElement("div");
-        btn.className = "coin";
-        btn.innerText = option;
-        btn.onclick = function() {
-            if (option === correctAnswer) {
-                showCorrect();
+        character.style.left = targetX + "px";
+        character.style.bottom = targetY + "px";
+
+        setTimeout(() => {
+            currentLevel++;
+
+            if (currentLevel > 5) {
+
+                document.getElementById("info").innerHTML = "🎉 SELAMAT MENANG!";
+                flag.style.display = "block";
+
+                setTimeout(() => {
+                    restartGame();
+                    flag.style.display = "none";
+                }, 2000);
+
             } else {
-                showWrong();
+                document.getElementById("info").innerHTML = "Level " + currentLevel;
             }
-        };
-        answersDiv.appendChild(btn);
-    });
-}
 
-function showCorrect() {
-    document.getElementById("correct").style.display = "block";
-    setTimeout(() => {
-        document.getElementById("correct").style.display = "none";
-        currentLevel++;
+        }, 700);
 
-        if (currentLevel > maxLevel) {
-            showWin();
-        } else {
-            loadQuestion();
-        }
-    }, 800);
-}
+    } else {
 
-function showWrong() {
-    document.getElementById("wrong").style.display = "block";
-    setTimeout(() => {
-        document.getElementById("wrong").style.display = "none";
-    }, 800);
-}
+        wrongMark.style.display = "block";
 
-function showWin() {
-    document.getElementById("flag").style.display = "block";
-    document.getElementById("info").innerText = "🎉 SELAMAT MENANG!";
-
-    setTimeout(() => {
-        document.getElementById("flag").style.display = "none";
-        restartGame();
-    }, 2000);
+        setTimeout(() => {
+            wrongMark.style.display = "none";
+            restartGame();
+        }, 1000);
+    }
 }
 
 function restartGame() {
     currentLevel = 1;
-    loadQuestion();
+    document.getElementById("info").innerHTML = "Level 1";
+    document.getElementById("character").style.left = "50%";
+    document.getElementById("character").style.bottom = "40px";
 }
-
-generateLevels();
-loadQuestion();
 </script>
 
 </body>
